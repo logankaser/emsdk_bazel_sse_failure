@@ -1,0 +1,20 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary")
+load("@emsdk//emscripten_toolchain:wasm_rules.bzl", "wasm_cc_binary")
+
+cc_binary(
+  name = "simd_cc",
+  srcs = ["main.cpp"],
+  copts = [
+    "-msimd128",
+    "-msse",
+    "-msse2",
+    "-msse3",
+  ]
+)
+
+wasm_cc_binary(
+  name = "build_fails",
+  cc_target = ":simd_cc",
+  outputs = ["out.wasm"],
+  simd = True,
+)
